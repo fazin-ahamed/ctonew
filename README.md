@@ -1,38 +1,69 @@
 # Business OS
 
-**Business OS** is an AI-native, modular, multi-tenant operating system for businesses. It unifies CRM, HRM, Finance, Projects, Support, Automation, and AI workflows into a single platform.
+A comprehensive AI-native SaaS platform.
 
-> **Note:** This repository contains the initial System Design and Product Requirements.
+## Architecture
 
-## 📚 Documentation
+- **Frontend**: React, Vite, TailwindCSS, Zustand
+- **Backend**: FastAPI, SQLAlchemy (Async), Alembic, Celery
+- **Database**: PostgreSQL with pgvector
+- **Auth**: Supabase Auth
 
-Detailed documentation is available in [PRD_AND_SYSTEM_DESIGN.md](./PRD_AND_SYSTEM_DESIGN.md).
+## Getting Started
 
-It covers:
-- Product Vision & Scope
-- Functional Requirements (CRM, HRM, Finance, etc.)
-- System Architecture (FastAPI, React, PostgreSQL + pgvector)
-- Database Design (RLS, Multi-tenancy)
-- Backend & Frontend Architecture
-- Security & Deployment Strategy
+### Prerequisites
 
-## 🚀 Technology Stack
+- Docker & Docker Compose
+- Node.js 18+ (for local frontend dev outside docker)
+- Python 3.11+ (for local backend dev outside docker)
 
-- **Frontend:** React, TypeScript, Vite, TailwindCSS, shadcn/ui
-- **Backend:** FastAPI, SQLAlchemy (Async), Celery
-- **Database:** PostgreSQL (with pgvector), Redis
-- **Auth:** Supabase Auth
-- **Infrastructure:** Railway (Backend/DB), Cloudflare R2 (Storage)
+### Running Locally
 
-## 🏗 Project Structure (Planned)
+1. Clone the repo
+2. Copy environment variables:
+   ```bash
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env
+   ```
+3. Run with Docker Compose:
+   ```bash
+   docker-compose up --build
+   ```
 
-The project will follow a monorepo-style structure:
+The API will be available at http://localhost:8000
+The Frontend will be available at http://localhost:5173
 
+### Database Migrations
+
+To run migrations:
+
+```bash
+docker-compose exec backend alembic upgrade head
 ```
-/
-├── backend/            # FastAPI application
-├── frontend/           # React application
-└── PRD_AND_SYSTEM_DESIGN.md
-```
 
-Please refer to the detailed design document for the implementation roadmap.
+## Modules
+
+- Core (Tenants, Users, RBAC)
+- CRM
+- Finance
+- HRM
+- Projects
+- Support
+- Automation (Workflow Engine)
+- AI Gateway
+
+## Deployment
+
+### Railway (Backend)
+
+1. Connect GitHub repo to Railway.
+2. Add PostgreSQL and Redis plugins.
+3. Set environment variables.
+4. Deploy `backend` directory.
+
+### Vercel / Cloudflare Pages (Frontend)
+
+1. Connect GitHub repo.
+2. Set build command: `npm run build`
+3. Set output directory: `dist`
+4. Set environment variables.

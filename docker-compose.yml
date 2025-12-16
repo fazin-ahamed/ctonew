@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: business_os_backend
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/business_os
+      - SUPABASE_URL=http://supabase_mock
+      - SUPABASE_KEY=mock_key
+      - SUPABASE_JWT_SECRET=mock_secret
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build: ./frontend
+    container_name: business_os_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_SUPABASE_URL=http://supabase_mock
+      - VITE_SUPABASE_ANON_KEY=mock_key
+    depends_on:
+      - backend
+    command: npm run dev -- --host
+
+  db:
+    image: postgres:15-alpine
+    container_name: business_os_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=business_os
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: business_os_redis
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: ./backend
+    container_name: business_os_worker
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/business_os
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - backend
+      - redis
+    command: celery -A app.worker.celery_app worker --loglevel=info
+
+volumes:
+  postgres_data:
