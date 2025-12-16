@@ -18,6 +18,7 @@ export const Layout = () => {
           <Link to="/finance" className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Finance</Link>
           <Link to="/hrm" className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">HRM</Link>
           <Link to="/projects" className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Projects</Link>
+          <Link to="/support" className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Support</Link>
           <Link to="/automation" className="block py-2 px-4 text-gray-700 hover:bg-gray-100 rounded">Automation</Link>
         </nav>
         <div className="absolute bottom-0 w-64 p-4 border-t">

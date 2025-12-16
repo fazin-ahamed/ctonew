@@ -1,8 +1,8 @@
-from .core import Tenant, User, TenantUser
+from .core import Tenant, User, TenantUser, FeatureFlag, AuditLog
 from .crm import Lead, Deal, Activity
 from .finance import Invoice, Expense, Payroll
 from .hrm import Employee, Attendance, Leave
 from .projects import Project, Task, Milestone
 from .support import Ticket
 from .automation import Workflow, WorkflowExecution
-from .ai import AIRequestLog, AIMemory
+from .ai import AIRequestLog, AIMemory, PromptTemplate
